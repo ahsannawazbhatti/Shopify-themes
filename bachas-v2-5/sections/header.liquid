@@ -1,0 +1,72 @@
+<header {% if settings.page_layout == 'home3' %} class="home-three-header" {% elsif settings.page_layout == 'home4' %} {% if template == 'index' %}class="home-four-header" {% endif %}{% endif %}>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <div class="logo">
+          {% include 'logo' %}
+        </div>
+      </div>
+      <div class="col-lg-7 col-md-7 col-sm-9">
+        <div class="mainmenu">
+          <nav>
+            {% include 'main-menu' %}
+          </nav>
+        </div>        
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+        <div class="header-right-menu">
+          <ul class="header-settings">
+            {% include 'header-settings' %}
+          </ul>
+          <ul class="header-search">
+            <li class="search-menu">
+              <i id="toggle-search" class="pe-7s-search"></i>
+            </li>
+          </ul>
+          {% include 'header-cart' %}
+        </div>    
+      </div>
+    </div>
+  </div>
+  {% include 'search-bar' %}
+  <!-- Mobile Menu Area start -->
+  <div class="mobile-menu-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          {% include 'header-mob-nav' %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Mobile Menu Area end -->	
+</header>
+<!--End of Header Area-->
+
+{% schema %}
+ {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Logo"
+      },
+      {
+        "type": "checkbox",
+        "id": "logo_use_image",
+        "label": "Use a custom logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "logo",
+        "info": "400px wide .png recommended"
+      },
+      {
+        "type": "link_list",
+        "id": "header_menu_1",
+        "label": "Header Navigational Menu To Use"
+      }
+    ]
+  }
+{% endschema %}

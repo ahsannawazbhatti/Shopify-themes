@@ -1,0 +1,57 @@
+<!--Featured Product Area Start-->
+<div class="featured-product-area {% if section.settings.products_tab_layout == 'products-tab-design2' %}home-three-product{% endif %}">
+  <div class="container">
+    {% if section.settings.products_tab_layout != 'products-tab-design2' %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-title">
+          <h4><span>{{ section.settings.products_tab_title }}</span></h4>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="features-tab">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            {% capture tabs %}{{ section.settings.products_tab_collection1 }},{{ section.settings.products_tab_collection2 }},{{ section.settings.products_tab_collection3 }},{{ section.settings.products_tab_collection4 }},{{ section.settings.products_tab_collection5 }}{% endcapture %}
+            {% assign tabs_collection = tabs | split: "," %}
+            {% for coll in tabs_collection %}
+            {% assign title = collections[coll].title %}
+            <li {% if forloop.first == true %} class="active" {% endif %} role="presentation">
+              <a data-toggle="tab" role="tab" aria-controls="{{ coll }}" href="#{{ coll }}">{{ title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="tab-content">
+        {% for coll in tabs_collection %}
+        {% assign coll_products = collections[coll].products %}
+        <div role="tabpanel" class="tab-pane fade in {% if forloop.first == true %}active{% endif %}" id="{{ coll }}">
+          <div class="featured-product-carousel carousel-style-one">
+            {% if section.settings.listing_rows == '1' %}
+              {% for product in coll_products limit:section.settings.products_tab_count %}
+              <div class="single-product-item col-md-4">
+              {% include 'product-grid-item' %}
+              </div>
+              {% endfor %}
+            {% else %}
+              {% for product in coll_products limit:section.settings.products_tab_count %}
+              {% cycle '<div class="single-product-item col-md-4">','' %}
+              {% include 'product-grid-item' %}
+              {% cycle '','</div>' %}
+              {% endfor %}
+            {% endif %}
+            
+            <!-- End Item -->
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<!--End of Featured Product Area-->

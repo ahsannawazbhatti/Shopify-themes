@@ -1,0 +1,71 @@
+{% unless current_collection %}
+{% assign current_collection = collection %}
+{% endunless %}
+
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+{% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% if product.available  %}
+{% assign sold_out = false %}
+{% endif %}
+
+{% comment %}
+Select the product image size from settings.
+{% endcomment %}
+{% assign image_size = settings.collection_prod_image_sizes %}
+<div class="shop-product-list col-md-12">
+  <div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <a href="{{ product.url }}">
+        <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+        {% assign product_created_at = product.created_at | date: '%s' %}
+        {% assign time_ago = 'now' | date: '%s' | minus: product_created_at | divided_by: 86400 %}
+        {% if time_ago < 7 %}
+        <span class="new">
+          <span class="sale-bg"></span><span class="sale-text">{{ 'products.product.new' | t }}</span>
+        </span>
+        {% endif %}          
+        {% if on_sale %}
+        <span class="onsale">
+          <span class="sale-bg"></span><span class="sale-text">-{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round}}%</span>
+        </span>
+        {% endif %}
+        {% if sold_out %}
+        <span class="soldout">
+          <span class="sale-bg"></span><span class="sale-text">{{ 'products.product.sold_out' | t }}</span>
+        </span>
+        {% endif %}
+      </a>
+    </div>
+    <div class="col-lg-8 col-md-8 col-sm-8">
+      <div class="shop-product-text">
+        <h5><a href="{{ product.url | within: collection }}">{{ product.title }}</a></h5>
+        <div class="price-rating-container">    
+          <div class="price-box">
+            {% if product.compare_at_price > product.price %}
+            <span>{{ product.price | money }}</span><span class="old-price">{{ product.compare_at_price_max | money }}</span>
+            {% else %}
+            <span>{{ product.price | money }}</span>
+            {% endif %} 
+          </div>
+          <div class="rating-right">
+            {% include 'review' %}
+          </div>
+        </div>
+        <p class="product-desc">
+          {{ product.content | strip_html | truncatewords: 30 }}..
+        </p>
+        <div class="availability"><span>{% if product.available %} {{ 'products.product.in_stock' | t }}{% else %} {{ 'products.product.out_stock' | t }}{% endif %}</span></div>
+        <div class="shop-buttons">
+          <a href="/cart/add?id={{ product.variants.first.id }}" class="cart-btn"><i class="pe-7s-cart"></i><span>{{ 'products.product.add_to_cart' | t }}</span></a>
+          <li>{% include 'product-wishlist' %}</li>
+          <a href="{{product.url}}"><i class="pe-7s-copy-file"></i></a>
+          <a class="modal-view quickview" href="#" data-toggle="modal" data-target="#productModal" data-productinfo='{{ product | json | escape }}'><i class="pe-7s-search"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

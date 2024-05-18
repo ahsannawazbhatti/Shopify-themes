@@ -1,0 +1,167 @@
+{% assign number_of_comments = article.comments_count %}
+{% if comment and comment.created_at %}
+{% assign number_of_comments = article.comments_count | plus: 1 %}
+{% endif %}
+{% include 'breadcrumb' %}
+<!--blog main area -->
+<section class="blog-page-area">
+  <div class="container">
+    <div class="row">
+      {% if settings.blog_sidebar_position == 'left' %}
+      <div class="col-md-3">
+        {% include 'blog-sidebar' %}
+      </div>
+      {% endif %}
+      <div class="col-md-9">
+        <!--blog start -->
+        <div class="single-blog">
+          <div class="post-thumbnail">
+            {% if article.image %}
+            <a href="{{ article | img_url: 'master' }}">
+              <img src="{{ article | img_url: 'master' }}" alt="">
+            </a>
+            {% endif %}
+          </div>
+          <div class="postinfo-wrapper">
+            <div class="post-date">
+              <time datetime="{{ article.published_at | date }}">
+                {{ article.published_at | date: '<span class="day">%d</span><span class="month">%b</span>' }}
+              </time>
+            </div>
+            <div class="post-info">
+              <h1 class="blog-post-title">{{ article.title }}</h1>
+              <div class="entry-meta">
+                {{ 'blogs.article.by' | t }} <span class="author vcard">
+                <a class="url fn n" href="#" title="View all posts by admin" rel="author">{{ article.author }}</a></span> /
+                {% include 'tags-article' %}
+              </div>
+              <div class="entry-summary">
+                <p>{{ article.content }}</p>
+              </div>
+              <div class="entry-meta">                   
+                <a href="#">{{ article.comments_count }} comments </a><span class="author vcard">/ Tags:</span> / {% include 'tags-article' %}
+              </div>
+              {% include 'social-share-blog' %}
+              <div class="author-info">
+                <div class="author-description">
+                  <div class="row">
+                    {% if blog.next_article or blog.previous_article %}
+                    <p class="clearfix"> 
+                      {% if blog.next_article %}
+                    <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                      <span>{{ '&larr; Next Post' | link_to: blog.next_article }}</span>
+                    </div>
+                    {% endif %}    
+                    {% if blog.previous_article %}
+                    <div class="col-md-6 col-sm-6 col-xs-6 text-left">
+                      <span >{{ 'Previous Post &rarr;' | link_to: blog.previous_article }}</span>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% if blog.comments_enabled? %}
+              {% comment %}
+              Just like blog.liquid page, define how many comments should be on each page.
+              {% endcomment %}
+              {% paginate article.comments by 5 %}
+              {% comment %}
+              #comments is required, it is used as an anchor link by Shopify.
+              {% endcomment %}
+              <div class="reply-comment-area">
+                <h3>{{ 'blogs.comments.with_count' | t: count: number_of_comments }}</h3>
+                {% if comment and comment.created_at %}
+                <div class="row">
+                  {% if blog.moderated? %}
+                  <div class="item-message-box item-message-success">
+                    <p><span class="lnr lnr-hand"></span> {{ 'blogs.comments.success_moderated' | t }}</p>
+                  </div>
+                  {% else %}
+                  <div class="item-message-box item-message-success">
+                    <p><span class="lnr lnr-hand"></span> {{ 'blogs.comments.success' | t }}</p>
+                  </div>
+                  {% endif %}
+                </div>
+                {% endif %}
+
+                {% if number_of_comments > 0 %}
+                {% comment %}
+                If a comment was just submitted with no blank field, show it.
+                {% if comment and comment.created_at %}
+                {% include 'comment' %}
+                {% endif %}
+                {% endcomment %}
+
+                {% comment %}
+                Showing the rest of the comments.
+                {% endcomment %}
+                {% for comment in article.comments %}
+                {% include 'comment' %}
+                {% endfor %}
+                <!-- end comments-list -->
+                {% if paginate.pages > 1 %}
+                <div class="pagination">
+                  {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+                </div>
+                {% endif %}
+                {% endif %}
+              </div>
+              <div class="user-comment-form-area">
+                <h3>{{ 'blogs.comments.title' | t }}</h3>
+                {% form 'new_comment', article %}
+                {{ form.errors | default_errors }}
+                <p>{{ 'blogs.comments.description' | t }}</p>
+                <ul class="form-list">
+                  <li>
+                    <div class="fields">
+                      <div class="field name">
+                        <label for="name"><em>*</em>{{ 'blogs.comments.name' | t }}</label>
+                        <div class="input-box">
+                          <input type="text" class="input-text" name="comment[author]" id="CommentAuthor" placeholder="{{ 'blogs.comments.name' | t }}" value="{{ form.author }}" autocapitalize="words"  />
+                        </div>
+                      </div>
+                      <div class="field email">
+                        <label for="email"><em>*</em>{{ 'blogs.comments.email' | t }}</label>
+                        <div class="input-box">
+                          <input type="text" class="input-text"  name="comment[email]" id="CommentEmail" placeholder="{{ 'blogs.comments.email' | t }}" value="{{ form.email }}" autocorrect="off" autocapitalize="off" />
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="fields fields-1">
+                      <div class="field comment">
+                        <label for="comment">{{ 'blogs.comments.message' | t }}</label>
+                        <div class="input-box">
+                          <textarea class="input-text" cols="30" rows="5" name="comment[body]" id="CommentBody" placeholder="{{ 'blogs.comments.message' | t }}">{{ form.body }}</textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>         
+                    <input id="com-submit" type="submit" value="{{ 'blogs.comments.post' | t }}">
+                  </li>
+                </ul>
+                {% if blog.moderated? %}
+                <p>{{ 'blogs.comments.moderated' | t }}</p>
+                {% endif %}
+                {% endform %}
+              </div>
+
+              {% endpaginate %}
+              {% endif %}
+              <!--blog end -->
+            </div>
+          </div>
+        </div>
+      </div>
+      {% if settings.blog_sidebar_position == 'right' %}
+      <div class="col-md-3">
+        {% include 'blog-sidebar' %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+<!--End blog area -->

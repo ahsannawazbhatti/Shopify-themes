@@ -1,0 +1,23 @@
+<!--Banner Small Area Start-->
+<div class="banner-small-area" data-section-id="{{ section.id }}">
+  <div class="container">
+    <div class="row">
+      {% if section.blocks.size > 0 %}
+      {% for block in section.blocks %}
+      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        {% if block.settings.link != blank %}          
+        <a href="{{ block.settings.link }}" class="white-hover" {{ block.shopify_attributes }}>
+          {% endif %}
+          {% if block.settings.image != blank %}
+          <img src="{{ block.settings.image | img_url: '360x216' }}" alt=""/>
+          {% endif %}
+          {% if block.settings.link != blank %}          
+        </a>
+        {% endif %}
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+<!--End of Banner Area-->

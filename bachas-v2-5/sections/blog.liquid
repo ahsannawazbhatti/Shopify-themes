@@ -1,0 +1,28 @@
+{% include 'blog' %}
+
+{% schema %}
+{
+  "name": "Blog section",
+  "class": "index-section index-section--flush",
+  "max_blocks": 3,
+  "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title Text",
+		"default": "FROM THE BLOG"
+      },
+	  {
+        "type": "blog",
+        "id": "blogname",
+        "label": "Blog"
+      }
+  ],
+  "blocks": [
+  ],
+  "presets": [{
+    "name": "Blog section",
+    "category": "Feature Sections"
+  }]
+}
+{% endschema %}

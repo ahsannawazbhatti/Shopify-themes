@@ -1,0 +1,66 @@
+{% paginate blog.articles by settings.no_articles %}
+{% include 'breadcrumb' %}
+<!--Blog Post Area Start-->
+<section class="blog-page-area">
+  <div class="container">
+    <div class="row">
+      {% if settings.blog_sidebar_position == 'left' %}
+      <div class="col-md-3">
+        {% include 'blog-sidebar' %}
+      </div>
+      {% endif %}
+      <div class="col-md-9 {% if settings.blog_sidebar_position == 'left' %}left-border{% else %}right-border{% endif %}">
+        {% for article in blog.articles %}
+        <!--blog start -->
+        <div class="single-blog fix">
+          <div class="post-thumbnail">
+            {% if article.image %}
+            <a href="{{ article.url }}">
+              <img src="{{ article | img_url: 'master' }}" alt="{{ article.title }}">
+            </a>
+            {% endif %}
+          </div>
+          <div class="postinfo-wrapper">
+            <div class="post-date">
+              <time datetime="{{ article.published_at | date }}">
+                {{ article.published_at | date: '<span class="day">%d</span><span class="month">%b</span>' }}
+              </time>
+            </div>
+            <div class="post-info">
+              <h1 class="blog-post-title">
+                <a href="{{ article.url }}">{{ article.title }}</a>
+              </h1>
+              <div class="entry-meta">
+                {{ 'blogs.article.by' | t }} <span class="author vcard">
+                <a class="url fn n" href="#" title="View all posts by admin" rel="author">{{ article.author }}</a>
+                </span>
+                / {% include 'tags-article' %}
+              </div>
+              <div class="entry-summary">
+                {% if article.excerpt.size > 0 %}
+                <p>{{ article.excerpt | truncatewords: 60}}</p>
+                {% else %}
+                <p>{{ article.content | strip_html | truncatewords: 60 }}</p>
+                {% endif %}
+              </div>
+              <a href="{{ article.url }}" class="readmore">{{ 'blogs.article.read_more' | t }}</a>
+            </div>
+          </div>
+        </div>
+        <!--End blog -->
+        {% endfor %}
+          {% if paginate.pages > 1 %}
+          {% include 'pagination' %}
+          {% endif %}
+      </div>
+      {% if settings.blog_sidebar_position == 'right' %}
+      <div class="col-md-3">
+        {% include 'blog-sidebar' %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  </section>
+<!--End blog area -->
+
+{% endpaginate %}

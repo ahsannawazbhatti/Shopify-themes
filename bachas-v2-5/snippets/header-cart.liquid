@@ -1,0 +1,41 @@
+<ul class="header-r-cart">
+  <li>
+    <a class="cart" href="/cart"><i class="pe-7s-cart"></i><span>{{ cart.item_count }}</span></a>
+    <div class="mini-cart-content">
+      {% if cart.item_count < 1 %} 
+      <ul class="cart_empty ">
+        <li>
+          <span class="text-center">{{ 'cart.general.no_items'| t }}</span>
+        </li>
+      </ul>
+      {% else %}
+      {% for item in cart.items %}
+      <div class="cart-products">
+        <div class="cart-image">
+          <a href="{{ item.url }}">
+            <img src="{{ item | img_url: 'compact' }}"  alt="{{ item.title | escape }}" title="{{ item.title | escape }}"/>
+          </a>
+        </div>
+
+        <div class="cart-product-info">
+          <span class="quantity">{{ item.quantity }} <span class="times">X</span></span>
+          <a href="{{ item.url }}">{{ item.product.title }}</a>
+          <p class="p-price">{{ item.line_price | money }}</p>
+          <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="remove-product"><i class="fa fa-times-circle"></i></a>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="cart-price">
+        <span>{{ 'cart.general.subtotal' | t }}</span>
+        <span class="total-price">{{ cart.total_price | money }}</span>
+      </div>
+      <p class="cart-buttons">
+        <a href="/cart"><span>{{ 'cart.general.view_cart' | t }}<i class="fa fa-chevron-right"></i></span></a>
+      </p>
+      <p class="cart-buttons">
+        <a href="/checkout"><span>{{ 'cart.general.checkout' | t }}<i class="fa fa-chevron-right"></i></span></a>
+      </p>
+      {% endif %}
+    </div>
+  </li>
+</ul>

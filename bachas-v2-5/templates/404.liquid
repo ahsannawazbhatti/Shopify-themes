@@ -1,0 +1,16 @@
+{% include 'breadcrumb' %}
+<!--Error Text Area Start-->
+<section class="error-text-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="error-text">
+          <img src="{{ 'not-found.png' | asset_url }}" alt="">
+          <h1>{{ 'general.404.title' | t }}</h1>
+          <a href="/">{{ 'general.404.button' | t }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--End of Error Text Area-->

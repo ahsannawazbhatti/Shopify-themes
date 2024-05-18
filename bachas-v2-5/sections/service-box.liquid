@@ -1,0 +1,48 @@
+{% include 'feature-service' %}
+
+{% schema %}
+{
+  "name": "Service Boxes section",
+  "class": "index-section index-section--flush",
+  "max_blocks": 3,
+  "settings": [
+  ],
+  "blocks": [
+    {
+      "type": "box",
+      "name": "Feature box",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature_service_icon",
+          "label": "Feature icon",
+          "default": "pe-7s-headphones",
+          "info": "Get icon classes from http:\/\/themes-pixeden.com\/font-demos\/7-stroke\/"
+        },
+        {
+          "type": "text",
+          "id": "feature_service_title",
+          "label": "Feature Title"
+        },
+        {
+          "type": "text",
+          "id": "feature_service_description",
+          "label": "Feature description"
+        }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Service box section",
+    "category": "Feature Sections",
+    "blocks": [
+      {
+        "type": "box"
+      },
+      {
+        "type": "box"
+      }
+    ]
+  }]
+}
+{% endschema %}

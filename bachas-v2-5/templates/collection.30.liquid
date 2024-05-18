@@ -1,0 +1,78 @@
+{% include 'breadcrumb' %}
+<div class="sidebar-content-area">
+  <div class="container">
+    <div class="row">
+      {% if settings.show_collection_sidebar != false %}
+      {% include 'collection-sidebar' %}
+      <div class="col-lg-9 col-md-9">
+        {% else %}
+        <div class="col-lg-12 col-md-12">
+          {% endif %}
+          {% paginate collection.products by 30 %}
+          <h1 class="page-heading product-listing">
+            <span class="cat-name">{{ page_title }}</span>
+            <span class="heading-counter">There are {{ paginate.items }} products.</span>
+          </h1>
+          <div class="shop-item-filter" id="view-bar">
+            <div class="shop-tab clearfix">
+              {% include 'collection-views' %}
+              <div class="shop-tab-selectors">
+                {% include 'collection-sorting' %}
+                {% include 'collection-show-count' %}
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="tab-content" id="category-product">
+            <div role="tabpanel" class="tab-pane fade in active" id="grid">
+              <div class="row">
+                {% for product in collection.products %}
+                {% if settings.show_collection_sidebar != false %}
+                <div class="col-lg-4 col-md-4 col-sm-4">    
+                  <div class="single-product-item">
+                    {% include 'product-grid-item' %}
+                  </div>
+                </div>
+                {% else %}
+                <div class="col-lg-3 col-md-3 col-sm-3">    
+                  <div class="single-product-item">
+                    {% include 'product-grid-item' %}
+                  </div>
+                </div>
+                {% endif %}
+                {% else %}
+                <div class="grid-item">
+                  <p>{{ 'collections.general.no_matches' | t }}</p>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <!-- second -->
+            <div role="tabpanel" class="tab-pane fade in" id="list-grid">
+              <div class="row">
+                {% for product in collection.products %}
+                {% include 'product-list-item' %}
+                {% else %}
+                <div class="grid-item">
+                  <p>{{ 'collections.general.no_matches' | t }}</p>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            
+          </div>
+
+
+          <div class="col-md-12" id="pagination">
+            <div class="page-navigation">
+              {% if paginate.pages > 1 %}
+              {% include 'pagination' %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endpaginate %}

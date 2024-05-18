@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!--[if IE 8 ]>
+<html lang="en" class="no-js ie8"></html><![endif]-->
+<!--[if IE 9 ]>
+<html lang="en" class="no-js ie9"></html><![endif]-->
+<html class="no-js" lang="en">
+  <head>
+    <!-- Basic page needs ================================================== -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {% if settings.favicon_enable %}
+    <link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" />
+    <link rel="apple-touch-icon" href="{{ 'favicon.png' | asset_url }}" />
+    {% endif %}
+
+    <!-- Title and description ================================================== -->
+    <title>
+      {{ page_title }}{% if current_tags %}{% assign current_tags_joined = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags_joined }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+    </title>
+    {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    <!-- Product meta ================================================== -->
+    {% include 'open-graph-tags' %}
+    {% include 'twitter-card' %}
+
+    <!-- Helpers ================================================== -->
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- CSS ================================================== -->
+    {% include 'google-fonts' %}
+    {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}    
+    {{ '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css' | stylesheet_tag }}
+    {{ 'pe-icon-7-stroke.css' | asset_url | stylesheet_tag }}
+    {{ 'owl.carousel.css' | asset_url | stylesheet_tag }}
+    {{ 'owl.theme.css' | asset_url | stylesheet_tag }}
+    {{ 'owl.transitions.css' | asset_url | stylesheet_tag }}
+    {{ 'jquery-ui.css' | asset_url | stylesheet_tag }}
+    {{ 'meanmenu.min.css' | asset_url | stylesheet_tag }}
+    {{ 'jquery.fancybox.css' | asset_url | stylesheet_tag }}
+    {{ 'animate.css' | asset_url | stylesheet_tag }}
+    {{ 'nivo-slider.css' | asset_url | stylesheet_tag }}
+    {{ 'preview.css' | asset_url | stylesheet_tag }}
+    {{ 'normalize.css' | asset_url | stylesheet_tag }}
+    {{ 'main.css' | asset_url | stylesheet_tag }}
+    {{ 'jquery.bxslider.css' | asset_url | stylesheet_tag }}
+    {{ 'style.css' | asset_url | stylesheet_tag }}
+    {{ 'responsive.css' | asset_url | stylesheet_tag }}
+    {{ 'custom.css' | asset_url | stylesheet_tag }}
+
+    {% if settings.ajax_cart_method != 'page' %}
+    <!-- Ajaxify Cart Plugin ================================================== -->
+    {{ 'ajaxify.scss.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+
+    <!-- Header hook for plugins ================================================== -->
+    {{ content_for_header }}
+    {% include 'oldIE-js' %}
+    {{ 'jquery-1.12.4.min.js' | asset_url | script_tag }}
+  </head>
+
+  <body>
+    <!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+    {% section 'header' %}
+    
+    {{ content_for_layout }}
+    <!-- End Content -->
+
+    {% unless template == 'index' %}
+    {% if settings.homepage_brand_show %}
+    {% include 'brands' %}
+    {% endif %}
+    {% include 'newsletter' %}
+    {% endunless %}
+
+    {% include 'quickview' %}
+
+    {% section 'footer' %}
+   
+    {% if settings.show_pupup and template == 'index'%}
+    {% include 'popup' %}
+    {% endif %}
+
+    {% unless template == 'index' %}
+    <div id="wraper_ajax" class="loadding_ajaxcart" ><i class="fa fa-spinner fa-spin"></i></div>
+    {% endunless %}
+
+    <!-- JavaScripts-->
+    {{ 'bootstrap.min.js' | asset_url | script_tag }}
+    {{ 'jquery.nivo.slider.js' | asset_url | script_tag }}
+    {{ 'home.js' | asset_url | script_tag }}
+    {{ 'wow.min.js' | asset_url | script_tag }}
+    {{ 'jquery.meanmenu.js' | asset_url | script_tag }}
+    {{ 'owl.carousel.min.js' | asset_url | script_tag }}
+    {{ 'jquery.scrollUp.js' | asset_url | script_tag }}
+    {{ 'plugins.js' | asset_url | script_tag }}
+    {{ 'jquery-price-slider.js' | asset_url | script_tag }}
+    {{ 'jquery.bxslider.min.js' | asset_url | script_tag }}
+    {{ 'jquery.fancybox.js' | asset_url | script_tag }}
+    {{ 'jquery.collapse.js' | asset_url | script_tag }}
+    {{ 'main.js' | asset_url | script_tag }}
+    {{ 'quickview.js' | asset_url | script_tag }}
+    {% if template contains 'customers' %}
+    {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+    {{ 'customer_area.js'  | shopify_asset_url | script_tag }}
+    {% endif %}
+
+    <script>
+      var moneyFormat = '{{ shop.money_format }}';
+    </script>
+
+    {% if template == 'product' %}
+    {{ 'handlebars.min.js' | asset_url | script_tag }}
+    {% endif %}
+    {% if settings.ajax_cart_method != 'page' %}
+    {% include 'ajax-cart-template' %}
+    {{ 'ajaxify.js' | asset_url | script_tag }}
+
+    <script>
+      jQuery(function($) {
+        ajaxifyShopify.init({
+          method: '{{ settings.ajax_cart_method }}',
+          wrapperClass: 'product-detail',
+          formSelector: '#addToCartForm',
+          addToCartSelector: '#addToCart',
+          cartCountSelector: '.cart-count',
+          cartCostSelector: '.cart-cost',
+          toggleCartButton: '.cart-toggle',
+          useCartTemplate: true,
+          btnClass: 'btn',
+          moneyFormat: {{ shop.money_format | json }},
+          disableAjaxCart: false,
+          enableQtySelectors: true
+        });
+      });
+    </script>
+    {% endif %}
+    {{ 'fastclick.min.js' | asset_url | script_tag }}
+    {{ 'shop.js' | asset_url | script_tag }}
+
+    {% include 'currencies' %}
+  </body>
+
+</html>
+

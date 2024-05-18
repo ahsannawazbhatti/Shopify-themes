@@ -1,0 +1,118 @@
+{% assign grid_results = true %}
+
+{% assign respond_js_secret_key = shop.domain | md5 %}
+{% unless search.terms == respond_js_secret_key %}
+{% include 'breadcrumb' %}
+<div class="shop-product-area section-padding-bottom">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-md-12 col-sm-12">
+
+        {% if search.performed %}
+        {% paginate search.results by 10 %}
+        {% if search.results_count == 0 %}
+        <div class="search-header">
+          <h1>{{ 'general.search.title' | t }}</h1>
+          <h2>{{ 'general.search.no_results_html' | t: terms: search.terms }}</h2>
+          <br/>
+        </div>
+        {% else %}
+        <div class="search-header">
+          <h2>{{ 'general.search.results_for_html' | t: terms: search.terms }}</h2>
+          <br/>
+        </div>
+        {% if grid_results == false %}
+
+        {% for item in search.results %}
+        {% include 'search-result' %}
+        {% endfor %}
+
+        {% else %}
+
+        <div class="section-padding-bottom">
+          <div class="shop-products clear row">
+            {% for item in search.results %}
+            {% assign grid_item_width = 'large--one-fifth medium--one-third small--one-half' %}
+            {% include 'search-result-grid' %}
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        {% endif %}
+
+        {% if paginate.pages > 1 %}
+        {% include 'pagination' %}
+        {% endif %}
+        {% endpaginate %}
+        {% else %}
+
+        {% comment %}
+        If search.performed is false, someone either accessed the page without the q parameter, or it was blank.
+        {% endcomment 
+
+        <h2 class="text-center">{{ 'general.search.title' | t }}</h2>
+        {% include 'search-bar' %}
+        <div class="search-header">
+          <h2>{{ 'general.search.title' | t }}</h2>
+          <br/>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% else %}
+{% include 'respond' %}
+{% layout none %}
+{% endunless %}
+
+
+<script type="text/javascript"><!--
+  $('#button-search').bind('click', function() {
+  url = 'index.php?route=product/search';
+
+  var search = $('#content input[name=\'search\']').prop('value');
+
+  if (search) {
+    url += '&search=' + encodeURIComponent(search);
+  }
+
+  var category_id = $('#content select[name=\'category_id\']').prop('value');
+
+  if (category_id > 0) {
+    url += '&category_id=' + encodeURIComponent(category_id);
+  }
+
+  var sub_category = $('#content input[name=\'sub_category\']:checked').prop('value');
+
+  if (sub_category) {
+    url += '&sub_category=true';
+  }
+
+  var filter_description = $('#content input[name=\'description\']:checked').prop('value');
+
+  if (filter_description) {
+    url += '&description=true';
+  }
+
+  location = url;
+});
+
+  $('#content input[name=\'search\']').bind('keydown', function(e) {
+    if (e.keyCode == 13) {
+      $('#button-search').trigger('click');
+    }
+  });
+
+  $('select[name=\'category_id\']').on('change', function() {
+    if (this.value == '0') {
+      $('input[name=\'sub_category\']').prop('disabled', true);
+    } else {
+      $('input[name=\'sub_category\']').prop('disabled', false);
+    }
+  });
+
+  $('select[name=\'category_id\']').trigger('change');
+  --></script>

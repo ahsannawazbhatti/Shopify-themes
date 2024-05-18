@@ -1,0 +1,142 @@
+{% include 'breadcrumb' %}
+<!-- cart main area start -->
+
+{% if cart.item_count > 0 %}
+<form class="form-cart" method="post">
+  <div class="cart-main-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="page-heading">{{ page_title }}</h1>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="table-content table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th class="product-thumbnail">{{ 'cart.general.heading_image' | t }}</th>
+                  <th class="product-name">{{ 'cart.general.heading_product_name' | t }}</th>
+                  <th class="product-price">{{ 'cart.general.heading_unit_price' | t }}</th>
+                  <th class="product-quantity">{{ 'cart.general.heading_quantity' | t }}</th>
+                  <th class="product-subtotal">{{ 'cart.general.heading_total' | t }}</th>
+                  <th class="product-remove">{{ 'cart.general.remove' | t }}</th>
+                </tr>
+              </thead>
+              {% for item in cart.items %}
+              <tbody data-line="{{ forloop.index }}">
+                <tr>
+                  <td class="product-thumbnail">
+                    <a href="{{ item.url }}">
+                      <img src="{{ item | img_url: 'small' }}"  alt="{{ item.title | escape }}" title="{{ item.title | escape }}" />
+                    </a>
+                  </td>
+                  <td class="product-name"><a href="{{ item.url }}">{{ item.product.title }}</a>
+                    {% unless item.variant.title contains 'Default' %}
+                    <br />
+                    <small>{{ item.variant.title }}</small>
+                    {% endunless %}
+
+                    {% if settings.product_quantity_message and item.variant.inventory_management and item.variant.inventory_quantity <= 0 and item.variant.incoming %}
+                    {% assign date = item.variant.next_incoming_date | date: format: 'month_day_year' %}
+                    <p><small>{{ 'products.product.will_not_ship_until' | t: date: date }}</small></p>
+                    {% endif %}
+
+                    {% assign property_size = item.properties | size %}
+                    {% if property_size > 0 %}
+                    {% for p in item.properties %}
+                    {% if forloop.first %}<br>{% endif %}
+                    {% unless p.last == blank %}
+                    {{ p.first }}:
+
+                    {% if p.last contains '/uploads/' %}
+                    <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                    {% else %}
+                    {{ p.last }}
+                    {% endif %}
+
+                    <br>
+                    {% endunless %}
+                    {% endfor %}
+                    {% endif %}
+                  </td>
+                  <td class="product-price"><span class="amount">{{ item.price | money }}</span>
+                  </td>
+                  <td class="product-quantity">
+                    <input type="number" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" min="0" data-line="{{ forloop.index }}">
+                  </td>
+                  <td class="product-subtotal"><span>{{ item.line_price | money }}</span>
+                  </td>
+                  <td class="product-remove"><a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" data-line="{{ forloop.index }}"><i class="fa fa-trash"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+              {% endfor %}
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-md-8 col-sm-7 col-xs-12">
+              <div class="buttons-cart">
+                <a href="/">{{ 'cart.general.continue_shopping' | t }}</a>
+                {% if additional_checkout_buttons %}
+                <div>{{ content_for_additional_checkout_buttons }}</div>
+                {% endif %}
+                <input type="submit" name="update" value="{{ 'cart.general.update' | t }}" />
+              </div>
+              <div class="coupon">
+                {% if settings.cart_notes_enable %}          
+                <h3>{{ 'cart.general.note' | t }}</h3>
+                <textarea class="coupon" rows="6" name="note" id="cartSpecialInstructions">{{ cart.note }}</textarea>
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-5 col-xs-12">
+              <div class="cart_totals">
+                <h2>Cart Totals</h2>
+                <table>
+                  <tbody>
+                    {% if cart.total_discounts > 0 %}
+                    {% assign savings = cart.total_discounts | money %}
+                    <tr class="cart-subtotal">
+                      <th></th>
+                      <td><span class="amount">{{ cart.total_price | money }}</span>
+                        <p class="sub-total">
+                          {{ 'cart.general.savings_html' | t: price: savings }}
+                        </p>
+                      </td>
+                    </tr>
+                    {% endif %}
+                    <tr class="shipping">
+                      <th colspan="2">{{ 'cart.general.taxes_extra' | t }}</th>
+                    </tr>
+                    <tr class="order-total">
+                      <th>{{ 'cart.general.subtotal' | t }}</th>
+                      <td>
+                        <strong><span class="amount">{{ cart.total_price | money }}</span></strong>
+                      </td>
+                    </tr>											
+                  </tbody>
+                </table>
+                <div class="wc-proceed-to-checkout">
+                  <a href="/checkout">{{ 'cart.general.proceed_checkout' | t }}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% else %}
+<div class="cart-main-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="page-heading">{{ 'cart.general.empty' | t }}</h1>
+        <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="header-top">
+      <div class="col-lg-6 col-md-6 col-sm-7 hidden-xs">
+        <div class="call-us text-left">
+          <p class="phone"><i class="fa fa-phone"></i><a href="tel:{{ settings.header_bar_cell }}">{{ settings.header_bar_cell }}</a>
+          </p>
+          <p class="free-shipping">{{ settings.header_bar_text }}</p>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12">
+        <div class="header-right user-info header-two">
+          <ul>
+            <li>
+              <a href="#" class="cart-toggler search-icon"><i class="fa fa-search"></i></a>
+              <div class="header-bottom-search">
+                {% include 'search-bar' %}
+              </div>
+            </li>
+            {% include 'header-cart' %}
+            {% include 'header-settings' %}  
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %}
+<div class="top-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 col-sm-4 col-xs-7">
+        <div class="top-left">
+          <div class="currency-box">
+            <a href="#" class="currency-link">$ USD</a>
+            <div class="currency-inner-box item-box-sub">
+              <ul>
+                <li><a href="#">Dollar</a></li>
+                <li><a href="#">Franch</a></li>
+                <li><a href="#">Mark</a></li>
+                <li><a href="#">Lira</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 col-sm-8 col-xs-5">
+        <div class="top-right">
+          <ul class="list-inline">
+            <li class="info-user">
+              <a href="#" class="account-link"><span class="lnr lnr-user"></span> {{ 'homepage.navigation.my_account' | t }}</a>
+              <ul class="list-unstyled inner-user-info">
+                {% if shop.customer_accounts_enabled %}
+                {% if customer %}
+                <li><a href="/account"><span class="lnr lnr-lock"></span>{{ 'homepage.navigation.my_account' | t }}</a></li>
+                <li><a href="/account/logout" id="customer_logout_link"><span class="lnr lnr-lock"></span>{{ 'layout.customer.log_out' | t }}</a></li>
+                {% else %}
+                <li><a href="/account/login" id="customer_login_link"><span class="lnr lnr-lock"></span>{{ 'layout.customer.sign_in' | t }}</a></li>
+                {% if shop.customer_accounts_optional %}
+                <li><a href="/account/register" id="customer_register_link"><span class="lnr lnr-lock"></span>{{ 'layout.customer.create_account' | t }}</a></li>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+              </ul>
+            </li>
+            <li><a href="/pages/wishlist" class="wishlist-link"><span class="lnr lnr-heart"></span> {{ 'homepage.navigation.wish_list' | t }}</a></li>
+            <li><a href="/checkout" class="checkout-link"><span class="lnr lnr-thumbs-up"></span> {{ 'homepage.navigation.checkout' | t }} </a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Top Header -->
+{% endcomment %}

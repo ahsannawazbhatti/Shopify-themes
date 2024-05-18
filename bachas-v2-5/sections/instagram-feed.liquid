@@ -1,0 +1,108 @@
+{% include 'instafeed' %}
+{% if template == 'index' %}
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    var feed = new Instafeed({        
+      {% if section.settings.insta_type == "tagged" %}
+      get: "{{ section.settings.insta_type }}",    
+      tagName: '{{ section.settings.insta_tag }}',
+      {% else %}
+      get: "{{ section.settings.insta_type }}",    
+      userId: {{ section.settings.insta_user_id }}, 
+      {% endif %}
+      accessToken: '{{ section.settings.insta_access_token }}', 
+      clientId: "{{ section.settings.insta_client_id }}",
+      limit: "{{ section.settings.insta_images_fetch }}",
+      resolution: "low_resolution",
+      after: function() {
+      jQuery("#instafeed a").attr("target","_blank");
+      $(".insta-carousel").owlCarousel({
+      autoPlay: false,
+      slideSpeed: 2000,
+      pagination: false,
+      navigation: true,
+      items: 5,
+      /* transitionStyle : "fade", */
+      /* [This code for animation ] */
+      navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
+      itemsDesktop: [1199, 4],
+      itemsDesktopSmall: [991, 3],
+      itemsTablet: [767, 2],
+      itemsMobile: [479, 1],
+    });
+  }
+                         });
+  feed.run();
+  });{% endif %}
+</script>
+{% schema %}
+{
+  "name": "Instafeed section",
+  "class": "index-section index-section--flush",
+  "settings": [
+	  {
+        "type": "checkbox",
+        "id": "homepage_instagram_feed",
+        "label": "Show Instagram feed",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "insta_title",
+        "label": "Title",
+        "default": "Instagram"
+      },
+      {
+        "type": "select",
+        "id": "insta_type",
+        "label": "Show images by tag\/user",
+        "options": [
+          {
+            "value": "user",
+            "label": "User"
+          },
+          {
+            "value": "tagged",
+            "label": "Tag"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "insta_tag",
+        "label": "Instagram Tag",
+        "default": "Fashion"
+      },
+      {
+        "type": "text",
+        "id": "insta_client_id",
+        "label": "Client Id",
+        "info": "Used when type is user"
+      },
+      {
+        "type": "text",
+        "id": "insta_user_id",
+        "label": "User Id",
+        "info": "Can be found from http:\/\/jelled.com\/instagram\/lookup-user-id"
+      },
+      {
+        "type": "text",
+        "id": "insta_access_token",
+        "label": "Access Token",
+        "info": "Can be found from http:\/\/instagram.pixelunion.net"
+      },
+      {
+        "type": "text",
+        "id": "insta_images_fetch",
+        "label": "No of images to fetch",
+        "default": "10"
+      }
+  ],
+  "blocks": [
+  ],
+  "presets": [{
+    "name": "Instagram Feed",
+    "category": "Feature Sections"
+  }]
+}
+{% endschema %}

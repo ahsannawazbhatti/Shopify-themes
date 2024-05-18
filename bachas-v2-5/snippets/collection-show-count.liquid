@@ -1,0 +1,58 @@
+<form class="item-page" method="get" action="#">
+  <label>{{ 'collections.view.view_as' | t }}</label>
+  <div class="selector">
+      <select name="sort-by" id="input-limit" class="form-control">
+    <option value="{% if ltype %}{{ ltype }}{% endif %}10" {% if template contains '10' %} selected {% endif %}>10</option>
+    <option value="{% if ltype %}{{ ltype }}{% endif %}20" {% if template contains '20' %} selected {% endif %}>20</option>
+    <option value="{% if ltype %}{{ ltype }}{% endif %}30" {% if template contains '30' %} selected {% endif %}>30</option>
+    <option value="{% if ltype %}{{ ltype }}{% endif %}all" {% if template contains 'all' %} selected {% endif %}>{{ 'collections.view.all' | t }}</option>
+  </select>
+  </div>
+</form>
+<script>
+  function replaceUrlParam(url, paramName, paramValue) {
+    var pattern = new RegExp('('+paramName+'=).*?(&|$)'),
+        newUrl = url.replace(pattern,'$1' + paramValue + '$2');
+    if ( newUrl == url ) {
+      newUrl = newUrl + (newUrl.indexOf('?')>0 ? '&' : '?') + paramName + '=' + paramValue;
+    }
+    return newUrl;
+  }
+
+  $(function() {
+    $('#input-limit').on('change', function(e) {
+      e.preventDefault();
+      var view = $(this).val(),
+          url = document.URL,
+          hasParams = url.indexOf('?') > -1;
+      // window.location
+      if (hasParams) {
+        url = replaceUrlParam(url, 'view', view);
+      } else {
+        url = url + '?view=' + view;
+      }
+      //$('#input-limit').val(view);
+      $.ajax({
+        type: 'GET',
+        url: url,
+        data: {},
+        beforeSend: function( xhr ) {
+          $("#wraper_ajax").show();
+        },
+        complete: function (data) {          
+          $('#category-product').html($("#category-product", data.responseText).html());
+          $('#grid-uniform').html($("#grid-uniform", data.responseText).html());
+          $('#view-bar').html($("#view-bar", data.responseText).html());
+          $('#pagination').html($("#pagination", data.responseText).html());
+          history.pushState({
+            page: url
+          }, url, url);      
+          $("#wraper_ajax").hide();
+          SPR.registerCallbacks(), SPR.initRatingHandler(), SPR.initDomEls(), SPR.loadProducts(), SPR.loadBadges();
+          // handleGridList();
+          //toggleTagsFilter();
+        }
+      });
+    });
+  });
+</script>

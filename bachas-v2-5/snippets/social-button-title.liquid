@@ -1,0 +1,67 @@
+{% if settings.footer_social_enable %}
+<ul class="{% if class %}{{ class }} {% else %} list-inline share-social{% endif %}">
+  {% if settings.social_facebook_link != blank %}
+  <li>
+    <a data-toggle="tooltip" data-placement="bottom" href="{{ settings.social_facebook_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Facebook' | escape }}">
+      <i class="fa fa-facebook-square"></i>{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Facebook' | escape }}
+    </a>
+  </li>
+  {% endif %}
+  {% if settings.social_twitter_link != blank %}
+  <li>
+    <a data-toggle="tooltip" data-placement="bottom" href="{{ settings.social_twitter_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Twitter' | escape }}">
+      <i class="fa fa-twitter-square"></i>{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Twitter' | escape }}
+    </a>
+  </li>
+  {% endif %}
+  {% if settings.social_pinterest_link != blank %}
+  <li>
+    <a data-toggle="tooltip" data-placement="bottom" href="{{ settings.social_pinterest_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Pinterest' | escape }}">
+      <i class="fa fa-pinterest-square"></i>{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Pinterest' | escape }}
+    </a>
+  </li>
+  {% endif %}
+  {% if settings.social_google_plus_link != blank %}
+  <li>
+    <a data-toggle="tooltip" data-placement="bottom" href="{{ settings.social_google_plus_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Google' | escape }}" rel="publisher">
+      <i class="fa fa-google-plus-square"> </i>{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Google' | escape }}
+    </a>
+  </li>
+  {% endif %}
+  {% if settings.social_instagram_link != blank %}
+  <li>
+    <a data-toggle="tooltip" data-placement="bottom" href="{{ settings.social_instagram_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Instagram' | escape }}">
+      <i class="fa fa-instagram"></i>{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Instagram' | escape }}
+    </a>
+  </li>
+  {% endif %}
+  {% if settings.social_tumblr_link != blank %}
+  <li>
+    <a data-toggle="tooltip" data-placement="bottom" class="fa fa-tumblr-square" href="{{ settings.social_tumblr_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Tumblr' | escape }}">
+      {{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Tumblr' | escape }}
+    </a>
+  </li>
+  {% endif %}
+  {% if settings.social_youtube_link != blank %}
+  <li>
+    <a data-toggle="tooltip" data-placement="bottom" class="fa fa-youtube-square"  href="{{ settings.social_youtube_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'YouTube' | escape }}">
+      {{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'YouTube' | escape }}
+    </a>
+  </li>
+  {% endif %}
+  {% if settings.social_vimeo_link != blank %}
+  <li>  
+    <a data-toggle="tooltip" data-placement="bottom" class="fa fa-vimeo-square" href="{{ settings.social_vimeo_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Vimeo' | escape }}">
+      {{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Vimeo' | escape }}
+    </a>
+  </li>
+  {% endif %}
+  {% if settings.social_fancy_link != blank %}
+  <li>
+    <a data-toggle="tooltip" data-placement="bottom" class="fa fa-fancy-square" href="{{ settings.social_fancy_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Fancy' | escape }}">
+      {{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Fancy' | escape }}
+    </a>
+  </li>
+  {% endif %}
+</ul>
+{% endif %}

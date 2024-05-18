@@ -1,0 +1,23 @@
+<!--Slider Area Start-->
+<div data-section-id="{{ section.id }}" data-section-type="slideshow-section" class="slider-area">
+  {% if section.blocks.size > 0 %}
+  <div class="preview-2" id="Slideshow-{{ section.id }}">
+    <div id="nivoslider" class="slides">	
+      {% for block in section.blocks %}
+      {% if block.type == 'image' %}
+      {% if block.settings.slide_link != blank %}          
+      <a href="{{ block.settings.slide_link }}" {{ block.shopify_attributes }}>
+        {% endif %}
+        {% if block.settings.image != blank %}
+        <img src="{{ block.settings.image | img_url: '1920x851' }}" alt=""/>
+        {% endif %}
+        {% if block.settings.slide_link != blank %}          
+      </a>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+    </div> 
+  </div>
+  {% endif %}
+</div>
+<!--End of Slider Area-->

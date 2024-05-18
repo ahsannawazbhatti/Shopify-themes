@@ -1,0 +1,36 @@
+<li class="settings-icon">
+  <a href="#"><i id="toggle-settings" class="pe-7s-settings"></i></a>
+  <div class="settings-menu">
+    {% assign codes = 'USD,EUR,GBP,CAD,ARS,AUD,BBD,BDT,BSD,BHD,BRL,BOB,BND,BGN,ILS,MMK,KYD,CLP,CNY,COP,CRC,HRK,CZK,DKK,DOP,XCD,EGP,XPF,FJD,GHS,GTQ,GYD,GEL,HKD,HUF,ISK,INR,IDR,NIS,JMD,JPY,JOD,KZT,KES,KWD,LVL,LTL,MXN,MYR,MUR,MDL,MAD,MNT,MZN,ANG,NZD,NGN,NOK,OMR,PKR,PYG,PEN,PHP,PLN,QAR,RON,RUB,SAR,RSD,SCR,SGD,SYP,ZAR,KRW,LKR,SEK,CHF,TWD,THB,TZS,TTD,TRY,UAH,AED,UYU,VEB,VND,ZMK' | split: ',' %}
+    {% assign supported_codes = settings.supported_currencies | split: ' ' %}           
+    <div class="menu-title">
+      <h3>{{ shop.currency }}</h3>
+      <ul name="currencies">
+        <li><a href="#" value="{{ shop.currency }}">{{ shop.currency }}</a></li>
+        {% for code in supported_codes %}
+        {% if code != shop.currency and codes contains code %}
+        <li><a href="#" value="{{ code }}">{{ code }}</a></li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="menu-title">
+      <h3>{{ 'homepage.navigation.my_account' | t }}</h3>
+      <ul>
+        {% if shop.customer_accounts_enabled %}
+        {% if customer %}
+        <li><a href="/account">{{ 'homepage.navigation.my_account' | t }}</a></li>
+        <li><a href="/account/logout" id="customer_logout_link">{{ 'layout.customer.log_out' | t }}</a></li>
+        {% else %}
+        <li><a href="/account/login" id="customer_login_link">{{ 'layout.customer.sign_in' | t }}</a></li>
+        {% if shop.customer_accounts_optional %}
+        <li><a href="/account/register" id="customer_register_link">{{ 'layout.customer.create_account' | t }}</a></li>
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        <li><a href="/pages/wishlist">{{ 'homepage.navigation.wish_list' | t }}</a></li>
+        <li><a href="/checkout">{{ 'homepage.navigation.checkout' | t }}</a></li>
+      </ul>
+    </div>
+  </div>
+</li>

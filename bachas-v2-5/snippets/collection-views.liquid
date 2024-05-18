@@ -1,0 +1,67 @@
+{% comment %}
+Toggle between collection.liquid and collection.list.liquid with the
+?view= parameter.
+<div class="col-md-5 col-sm-6 col-xs-12 clearfix">
+  <label class="control-label pull-left">{{ 'collections.view.view_as' | t }}: &nbsp;&nbsp;</label>
+  <div class="btn-group pull-left">
+    <button type="button" id="grid-view" data-view="grid" class="change-view btn btn-default {% unless template contains 'list' %} button-layout{% endunless %}" data-toggle="tooltip" title="Grid"  data-view="grid">{{ 'collections.view.grid' | t }}</button>
+    <span class="view-mode-split"> / </span>
+    <button type="button" id="list-view" data-view="list" class="change-view btn btn-default {% if template contains 'list' %} button-layout{% endif %} " data-toggle="tooltip" title="List"  data-view="list">{{ 'collections.view.list' | t }}</button>
+  </div>
+</div>
+{% endcomment %}
+<!-- Nav tabs -->
+<ul class="nav nav-tabs navbar-left" role="tablist">
+  <li role="presentation" class="active">
+    <a href="#grid" aria-controls="grid" role="tab" data-toggle="tab"><i class="fa fa-th-large"></i></a>
+  </li>
+  <li role="presentation">
+    <a href="#list-grid" aria-controls="list-grid" role="tab" data-toggle="tab"><i class="fa fa-th-list"></i></a>
+  </li>
+</ul>
+
+<script>
+  function replaceUrlParam(url, paramName, paramValue) {
+    var pattern = new RegExp('('+paramName+'=).*?(&|$)'),
+        newUrl = url.replace(pattern,'$1' + paramValue + '$2');
+    if ( newUrl == url ) {
+      newUrl = newUrl + (newUrl.indexOf('?')>0 ? '&' : '?') + paramName + '=' + paramValue;
+    }
+    return newUrl;
+  }
+
+  $(function() {
+    $('.change-view').on('click', function(e) {
+      e.preventDefault();
+      var view = $(this).data('view'),
+          url = document.URL,
+          hasParams = url.indexOf('?') > -1;
+      // window.location
+      if (hasParams) {
+        url = replaceUrlParam(url, 'view', view);
+      } else {
+        url = url + '?view=' + view;
+      }
+      $.ajax({
+        type: 'GET',
+        url: url,
+        data: {},
+        beforeSend: function( xhr ) {
+          $("#wraper_ajax").show();
+        },
+        complete: function (data) {          
+          $('#category-product').html($("#category-product", data.responseText).html());
+          $('#grid-uniform').html($("#grid-uniform", data.responseText).html());
+          $('#view-bar').html($("#view-bar", data.responseText).html());
+          history.pushState({
+            page: url
+          }, url, url);      
+          $("#wraper_ajax").hide();
+          SPR.registerCallbacks(), SPR.initRatingHandler(), SPR.initDomEls(), SPR.loadProducts(), SPR.loadBadges();
+          // handleGridList();
+          //toggleTagsFilter();
+        }
+      });
+    });
+  });
+</script>

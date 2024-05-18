@@ -1,0 +1,111 @@
+{% unless grid_item_width %}
+{% assign grid_item_width = 'large--one-third medium--one-half' %}
+{% endunless %}
+
+{% unless current_collection %}
+{% assign current_collection = collection %}
+{% endunless %}
+
+{% assign on_sale = false %}
+{% if item.compare_at_price > item.price %}
+{% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% if item.available %}
+{% assign sold_out = false %}
+{% endif %}
+
+{% assign image_size = settings.collection_prod_image_sizes %}
+{% if item.object_type == 'product' %}
+<div class="{% if col %}col-lg-4 col-md-4 col-sm-6 col-xs-12 {% else %}col-lg-3 col-md-3 col-sm-6 col-xs-12 {% endif %}{% if sitem %}s-item{% endif %}">
+  <div class="single-item clearfix">
+    <div class="s-product-img">
+      {% assign product_created_at = item.created_at | date: '%s' %}
+      {% assign time_ago = 'now' | date: '%s' | minus: product_created_at | divided_by: 86400 %}
+      {% if time_ago < 7 %}
+      <div class="sticker-icon new">
+        <span class="sticker-text">{{ 'products.product.new' | t }}</span>
+      </div>
+      {% endif %}          
+      {% if on_sale %}
+      <div class="sticker-icon sale">
+        <span class="sticker-text">-{{ item.compare_at_price | minus: item.price | times: 100.0 | divided_by: item.compare_at_price | round}}%</span>
+      </div>
+      {% endif %}
+      {% if sold_out %}
+      <div class="sticker-icon new">
+        <span class="sticker-text">{{ 'products.product.sold_out' | t }}</span>
+      </div>
+      {% endif %}
+
+      <a class="primary-img" href="{{ item.url }}">
+        <img src="{{ item.featured_image.src | img_url: 'large' }}" alt="{{ item.featured_image.alt | escape }}"></a>
+      <div class="choices">
+        <div class="global-table">
+          <div class="global-row">
+            <div class="global-cell">
+              <div class="choice-icon">
+                <ul>
+                  <li>
+                    <div class="icon-list">
+                      <a href="/cart/add?id={{ item.variants.first.id }}"><span class="no"></span><i class="fa fa-shopping-cart"></i></a>
+                      <a href="/pages/wishlist"><span class="yes"></span><i class="fa fa-heart-o"></i></a>
+                      <a href="{{item.url}}"><span class="no"></span><i class="fa fa-square-o"></i></a>
+                      <a href="#" class="modal-view detail-link quickview" data-toggle="modal" data-target="#productModal" data-productinfo='{{ product | json}}'><i class="fa fa-eye"></i></a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="product-info">
+      <p class="product-title">
+        <a href="{{ item.url | within: collection }}">{{ item.title }}</a>
+      </p>
+      <div class="product-price-area">
+        <span class="price">
+          {% if item.compare_at_price > item.price %}
+          <span class="n-amt">{{ item.price | money }}</span><span><del>{{ item.compare_at_price_max | money }}</del></span>
+          {% else %}
+          <span class="n-amt">{{ item.price | money }}</span>
+          {% endif %} 
+        </span>
+        <div class="star-rating">
+          {% include 'review' %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+{% assign img_tag = '<' | append: 'img' %}
+{% if item.content contains img_tag %}
+{% assign src = item.content | split: 'src="' %}
+{% assign src = src[1] | split: '"' | first %}
+{% if src %}
+{% assign image_src = src | replace: '_small.', '.' | replace: '_compact.', '.' | replace: '_medium.', '.' | replace: '_large.', '.' | replace: '_grande.', '.' %}
+{% endif %}
+{% endif %}
+
+{% unless image_src == blank %}
+<div class="product-grid-image">
+  <div class="product-grid-image--centered">
+    {{ image_src | img_tag }}
+  </div>
+</div>
+{% endunless %}
+
+<p class="h6">{{ item.title }}</p>
+
+<div class="rte">
+  {% if item.excerpt.size > 0 %}
+  <p>{{ item.excerpt | strip_html | truncatewords: 30 }}</p>
+  {% else %}
+  <p>{{ item.content | strip_html | truncatewords: 30 }}</p>
+  {% endif %}
+</div>
+{% endif %}

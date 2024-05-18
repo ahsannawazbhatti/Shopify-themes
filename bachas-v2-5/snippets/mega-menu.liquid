@@ -1,0 +1,46 @@
+<li {% if link.active %}class="current"{% endif %}>
+  <a href="#">{{link.title}}</a>
+  <div class="megamenu">
+    <div class="megamenu-list clearfix">
+      {% for i in (1..4) %}
+      {% capture handle %}mega_menu_{{ m }}_col_{{ i }}{% endcapture %}
+
+      {% case settings[handle] %}
+
+      {% when 'menu' %}
+
+      {% capture menu_width %}mega_menu_{{ m }}_width_col_{{ i }}{% endcapture %}
+      {% capture menu_title %}mega_menu_{{ m }}_title_col_{{ i }}{% endcapture %}
+      {% capture menu %}mega_menu_{{ m }}_ll_col_{{ i }}{% endcapture %}
+      <span>
+        <a class="mega-title" href="#">{{ settings[menu_title] }}</a>
+        {% for link in linklists[settings[menu]].links limit:5%}
+        <a href="{{link.url}}">{{link.title}}</a>
+        {% endfor %}
+      </span>
+      {% when 'collection' %}
+
+      {% capture menu_collection %}mega_menu_{{ m }}_collection_col_{{ i }}{% endcapture %}
+      <span>
+        <a class="mega-title" href="{{ collections[settings[menu_collection]].url }}">{{ collections[settings[menu_collection]].title }}</a>
+        {% for product in collections[settings[menu_collection]].products limit:5 %}
+        <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+        {% endfor %}
+      </span>
+      {% when 'image' %}
+
+      {% capture menu_title %}mega_menu_{{ m }}_title_col_{{ i }}{% endcapture %}
+      {% capture menu_image %}mega_menu_{{ m }}_image_col_{{ i }}.jpg{% endcapture %}
+      {% capture menu_image_link %}mega_menu_{{ m }}_image_link_col_{{ i }}{% endcapture %}
+      <span class="border-hover">
+        <a href="{{ settings[menu_image_link] }}" class="mega-image">
+          <img src="{{ menu_image | asset_url }}" alt="">
+        </a>
+      </span>
+      {% else %}
+
+      {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</li>

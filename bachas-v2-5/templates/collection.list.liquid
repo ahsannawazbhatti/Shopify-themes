@@ -1,0 +1,38 @@
+{% paginate collection.products by settings.product_count_per_page %}
+{% assign has_sidebar = false %}
+{% if collection.all_tags.size > 0 %}
+{% assign has_sidebar = true %}
+{% endif %}
+
+<div class="main-content">
+  <div class="container">
+    {% include 'breadcrumb' %}
+    <div class="product-grid">
+      <div class="sort-pagi-bar top clearfix">
+        {% include 'collection-views' %}
+        {% if paginate.pages > 1 %}
+        {% include 'pagination-custom' %}
+        {% endif %}
+        {% include 'collection-sorting' %}
+      </div>
+      <ul class="list-product row list-unstyled">
+        {% for product in collection.products %}
+        {% include 'product-grid-item' %}
+        {% else %}
+        <div class="grid-item">
+          <p>{{ 'collections.general.no_matches' | t }}</p>
+        </div>
+        {% endfor %}
+      </ul>
+      <div class="sort-pagi-bar bottom clearfix">
+        {% include 'collection-views' %}
+        {% if paginate.pages > 1 %}
+        {% include 'pagination-custom' %}
+        {% endif %}
+        {% include 'collection-sorting' %}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Grid Product -->
+{% endpaginate %}

@@ -1,0 +1,23 @@
+<!--Single Banner Area Start-->
+<div class="home-three-banner-area" data-section-id="{{ section.id }}">
+    <div class="container">
+    <div class="row">
+  {% if section.blocks.size > 0 %}
+  {% for block in section.blocks %}
+  <div class="col-md-12">
+    {% if block.settings.link != blank %}          
+    <a href="{{ block.settings.link }}" class="white-hover" {{ block.shopify_attributes }}>
+      {% endif %}
+      {% if block.settings.image != blank %}
+      <img src="{{ block.settings.image | img_url: '1170x430' }}" alt=""/>
+      {% endif %}
+      {% if block.settings.link != blank %}          
+    </a>
+    {% endif %}
+  </div>
+  {% endfor %}
+  {% endif %}
+      </div>
+  </div>
+</div>        
+<!--End of Single Banner Area-->

@@ -1,0 +1,40 @@
+<!-- Start Testimonial area -->
+<section id="testimonial" class="section-testimonial-area section-padding">
+  <div class="testimonial-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-offset-0 col-sm-12 col-md-offset-2 col-md-8">
+          <!-- start inner carousel -->
+          <div class="inner-carousel">
+            <!-- Active testimonial carousel -->
+            <div class="active-tesimonial-carousel">
+              {% for i in (1..4) %}
+              {% capture image %}homepage_testimonial_image_{{ i }}.png{% endcapture %}
+              {% capture title %}homepage_testimonial_{{ i }}_title{% endcapture %}
+              {% capture designation %}homepage_testimonial_{{ i }}_designation{% endcapture %}
+              {% capture p1 %}homepage_testimonial_{{ i }}_p1{% endcapture %}
+              <!--single testimonial start -->
+              <div class="single-testimonial text-center">
+                <img src="{{ image | asset_url}}" alt="{{ settings[title] }}">
+                <p class="quote">
+                  “{{ settings[p1] }}”
+                </p>
+                <div class="author-info">
+                  <p class="direction">
+                    <i class="pe-7s-way"></i>
+                  </p>
+                  <h2> {{ settings[title] }} - <span> {{ settings[designation] }} </span></h2>
+                </div>
+              </div>
+              <!-- end single testimonial -->
+              {% endfor %}
+            </div>
+            <!-- End testimonial carousel -->
+          </div>
+          <!-- end inner carousel -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--End Testimonial area -->

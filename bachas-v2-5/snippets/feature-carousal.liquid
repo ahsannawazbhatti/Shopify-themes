@@ -1,0 +1,90 @@
+{% assign product_collection = section.settings.collection %}
+{% if section.settings.layout == 'carousal-design1' %}
+<!--Product Carousel Area Start-->
+<div class="product-carousel-area">
+  <div class="product-carousel carousel-style-one">
+    {% for product in collections[product_collection].products %}
+    {% include 'product-grid-item-carousal' %}
+    {% endfor %}
+  </div>
+</div>
+<!--End of Product Carousel Area-->
+{% elsif section.settings.layout == 'carousal-design2' %}
+<!--Product Carousel Area Start-->
+<div class="featured-product-carousel-area-three">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="home-three-section-title">
+          <h4><span>{{ section.settings.title }}</span></h4>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="featured-product-carousel-three carousel-style-two">
+        {% for product in collections[product_collection].products %}
+        <div class="single-product-item">
+          {% include 'product-grid-item-carousal' %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<!--End of Product Carousel Area-->
+{% elsif section.settings.layout == 'collection-design1' %}
+<!--New Product Area Start-->
+<div class="new-product-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-title">
+          <h4><span>{{ collections[product_collection].title | escape }}</span></h4>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      {% for product in collections[product_collection].products limit:5 %}
+
+      {% if forloop.last == false %}
+      {% cycle '<div class="col-md-6"><div class="new-products-carousel"><div class="single-product-item">','','<div class="single-product-item">','' %}
+      {% include 'product-grid-item' %}
+      {% cycle '','</div>','','</div></div></div>' %}
+      {% else %}
+      <div class="col-md-6">
+        {% include 'product-grid-item' %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>   
+  </div>
+</div>
+<!--End of New Product Area-->
+{% elsif section.settings.layout == 'collection-design2' %}
+<!--New Product Area Start-->
+<div class="new-product-area-home-two">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-title">
+          <h4><span>{{ collections[product_collection].title | escape }}</span></h4>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      {% for product in collections[product_collection].products limit:5 %}
+      {% if forloop.first == true %}
+      <div class="col-md-6">
+        {% include 'product-grid-item' %}
+      </div>
+      {% else %}
+      {% cycle '<div class="col-md-6"><div class="new-products-carousel"><div class="single-product-item">','','<div class="single-product-item">','' %}
+      {% include 'product-grid-item' %}
+      {% cycle '','</div>','','</div></div></div>' %}
+      {% endif %}
+      {% endfor %}
+    </div>   
+  </div>
+</div>
+<!--End of New Product Area-->
+{% endif %}

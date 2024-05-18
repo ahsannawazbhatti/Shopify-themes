@@ -1,0 +1,66 @@
+<!--Testimonial Blog Area Start-->
+<div class="testimonial-blog-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6">
+        <div class="home-three-section-title">
+          <h4><span>What clients say</span></h4>
+        </div>
+        <div class="clearfix"></div>
+        <div class="testimonial-carousel carousel-style-two">
+          {% for i in (1..4) %}
+          {% capture image %}homepage_testimonial_image_{{ i }}.png{% endcapture %}
+          {% capture title %}homepage_testimonial_{{ i }}_title{% endcapture %}
+          {% capture designation %}homepage_testimonial_{{ i }}_designation{% endcapture %}
+          {% capture p1 %}homepage_testimonial_{{ i }}_p1{% endcapture %}
+          <div class="testimonial-item">
+            <div class="testimonial-text">
+              <p>{{ settings[p1] }}</p>
+            </div>
+            <div class="testimonial-author">
+              <div class="author-img">
+                <img src="{{ image | asset_url}}" alt="{{ settings[title] }}">
+              </div>
+              <div class="testimonial-info">
+                <span>{{ settings[title] }}</span>
+                <span class="e-mail"> - {{ settings[designation] }}</span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 blog-area">
+        <div class="home-three-section-title">
+          <h4><span>{{ 'blogs.title' | t }}</span></h4>
+        </div>
+        <div class="clearfix"></div>
+        <div class="blog-carousel-three carousel-style-two">
+          {% for article in blogs['news'].articles %}
+          <div class="row">
+            <div class="blog-item">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="blog-image">
+                  <a href="{{ article.url }}" class="white-hover"><img src="{{ article.image.src | img_url: 'medium' }}" alt=""></a>
+                </div>
+              </div>   
+              <div class="col-lg-6 col-md-6 col-sm-12">    
+                <div class="blog-description ">
+                  <h2 class="post-title"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+                  <div class="post-date"><time datetime="{{ article.published_at }}">{{ article.published_at | date: "%a, %b %d, %Y" }}</time></div>
+                  {% if article.excerpt.size > 0 %}
+                  <p>{{ article.excerpt | truncatewords: 20}}</p>
+                  {% else %}
+                  <p>{{ article.content | strip_html | truncatewords: 20 }}</p>
+                  {% endif %}
+                </div>
+              </div>    
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End of Testimonial Blog Area-->

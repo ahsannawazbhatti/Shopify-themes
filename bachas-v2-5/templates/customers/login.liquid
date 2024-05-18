@@ -1,0 +1,118 @@
+{% include 'breadcrumb' %}
+<!--My Account Content Area Start-->
+<div class="account-content-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="page-heading">{{ page_title }}</h1>
+        <div class="alert alert-danger" style="display:none;">
+          <i class="fa fa-exclamation-circle"></i>
+          {{ 'customer.login.warning_no_match' | t }}
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6">
+        <form id="create-account-form" method="post" action="#">
+          <h3 class="page-subheading">{{ 'customer.login.new_customer' | t }}</h3>
+          <div class="form-content">
+            <p><strong>{{ 'customer.login.register_account' | t }}</strong></p>
+            <p>{{ 'customer.login.register_info' | t }}</p>
+            <br/><a href="register" id="submitcreate" class="register">{{ 'customer.login.continue' | t }}</a>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6" id="login-form">
+        {% form 'customer_login' %}
+        <h3 class="page-subheading">{{ 'customer.login.returning_customer' | t }}</h3>
+        <div class="note form-success" id="resetSuccess" style="display:none;">
+          {{ 'customer.login.email_notification_info' | t }}
+        </div>
+
+        <div class="form-content">
+          <div class="form-group">
+            <label for="customer_email">{{ 'customer.login.email' | t }}</label>
+            <input type="email" value="" name="customer[email]" id="customer_email" placeholder="{{ 'customer.login.email' | t }}" {% if form.errors contains "email" %} class="account-input error" {% else %} class="account-input" {% endif %} autocorrect="off" autocapitalize="off" autofocus>
+          </div>
+          {% if form.password_needed %}
+          <div class="form-group">
+            <label for="customer_password">{{ 'customer.login.password' | t }}</label>
+            <input class="account-input" type="password" value="" name="customer[password]" id="customer_password" placeholder="{{ 'customer.login.password' | t }}" {% if form.errors contains "password" %} class="error" {% else %} class="form-control"{% endif %}>
+          </div>
+          <p class="lost-password form-group">
+            <a rel="nofollow" href="#" onclick="showRecoverPasswordForm();return false;">{{ 'customer.login.forgot_password' | t }}</a>
+          </p>
+          {% endif %}
+          <p class="submit">			
+            <button class="" name="SubmitLogin" id="submitlogin" type="submit">
+              <span><i class="fa fa-lock"></i>{{ 'customer.login.sign_in' | t }}</span>
+            </button>
+            {{ 'customer.login.or' | t }} <a class="btn-acct" href="{{ shop.url }}">{{ 'customer.login.cancel' | t }}</a>
+          </p>
+        </div>
+        {% endform %}
+        {% comment %}
+        This page uses JavaScript to show/hide the recover password form
+        {% endcomment %}
+        <div id="recover_password"  style="display: none;">
+
+          <h3>{{ 'customer.recover_password.title' | t }}</h3>
+          <p>{{ 'customer.recover_password.subtext' | t }}</p>
+
+          {% form 'recover_customer_password' %}
+
+          {% include 'form-errors-custom' %}
+
+          {% if form.posted_successfully? %}
+          {% assign reset_success = true %}
+          {% endif %}
+          <div class="form-group">
+            <label for="recover-email">{{ 'customer.recover_password.email' | t }}</label>
+            <input type="email" value="" name="email" class="account-input" id="recover-email" placeholder="{{ 'customer.recover_password.email' | t }}" autocorrect="off" autocapitalize="off">
+
+            <p class="submit lost-password form-group">			
+              <button class="" name="SubmitLogin" id="submitcreate" type="submit">
+                <span>{{ 'customer.recover_password.submit' | t }}</span>
+              </button>
+              {{ 'customer.login.or' | t }} <a class="btn-acct" href="#" onclick="hideRecoverPasswordForm();return false;">{{ 'customer.recover_password.cancel' | t }}</a>
+            </p>
+          </div>
+          {% endform %}
+
+        </div>
+        
+        {% if shop.checkout.guest_login %}
+        <h2>{{ 'customer.login.guest_title' | t }}</h2>
+        {% form 'guest_login' %}
+        <div class="form-group">
+          <input  type="submit" class="btn btn-primary" value="{{ 'customer.login.guest_continue' | t }}">
+        </div>
+        {% endform %}
+        {% endif %}
+        
+      </div>
+    </div>
+  </div>
+</div>
+<!--End of My Account Content Area-->
+
+<script>
+  /*
+    Show/hide the recover password form when requested.
+  */
+  function showRecoverPasswordForm() {
+    document.getElementById('recover_password').style.display = 'block';
+    document.getElementById('customer_login').style.display='none';
+  }
+
+  function hideRecoverPasswordForm() {
+    document.getElementById('recover_password').style.display = 'none';
+    document.getElementById('customer_login').style.display = 'block';
+  }
+
+  // Allow deep linking to the recover password form
+  if (window.location.hash == '#recover') { showRecoverPasswordForm() }
+
+  // reset_success is only true when the reset form is
+  {% if reset_success %}
+  document.getElementById('resetSuccess').style.display = 'block';
+  {% endif %}
+</script>

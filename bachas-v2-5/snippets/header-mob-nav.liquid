@@ -1,0 +1,36 @@
+<div class="mobile-menu hidden-md hidden-lg">
+  <nav id="dropdown">
+    <ul role="menu">
+      {% for link in linklists[section.settings.header_menu_1].links %}
+      {% assign child_list_handle = link.title | handleize %}
+      {% if child_list_handle == settings.mega_menu_1 %}
+
+      {% include 'mega-menu-mob', m:1 %}
+
+      {% elsif child_list_handle == settings.mega_menu_2 %}
+
+      {% include 'mega-menu-mob', m:2 %}
+
+      {% else %}
+      {% if linklists[child_list_handle].links != blank %}
+      <li{% if link.active %} class="active"{% endif %}>
+        <a href="{{link.url}}">{{link.title}}</a>
+        <ul role="menu">
+          {% for childlink in linklists[child_list_handle].links %}
+          <li class="{% if childlink.active %} active{% endif %}">
+            <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% else %}
+      <li{% if link.active %} class="active"{% endif %}>
+        <a href="{{link.url}}">{{link.title}}</a>
+      </li>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </nav>
+</div>
+<!-- end menu area -->			

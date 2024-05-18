@@ -1,0 +1,42 @@
+{% include 'brands' %}
+
+{% schema %}
+{
+  "name": "Brands section",
+  "class": "index-section index-section--flush",
+  "max_blocks": 8,
+  "settings": [
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image brand",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "brand image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+		}
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Brands section",
+    "category": "Feature Sections",
+    "blocks": [
+      {
+        "type": "image"
+      },
+      {
+        "type": "image"
+      }
+    ]
+  }]
+}
+{% endschema %}

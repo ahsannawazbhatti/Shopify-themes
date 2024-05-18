@@ -1,0 +1,9 @@
+{% if section.settings.logo_use_image %}
+<a href="/" itemprop="url">
+  <img src="{{ section.settings.logo | img_url: '203x59', scale: 2 }}"
+       alt="{{ section.settings.logo.alt | default: shop.name }}"
+       itemprop="logo">
+</a>
+{% else %}
+<a href="/" itemprop="url" class="navbar-brand">{{ shop.name }}</a>
+{% endif %}

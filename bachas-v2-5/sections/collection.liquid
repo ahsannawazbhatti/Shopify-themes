@@ -1,0 +1,50 @@
+{% include 'feature-carousal' %}
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "class": "index-section",
+  "settings": [
+    {
+    "type": "select",
+    "id": "layout",
+    "label": "Select section layout",
+    "options": [
+        {
+        "value": "carousal-design1",
+        "label": "Design 1 (carousal)"
+        },
+        {
+        "value": "carousal-design2",
+        "label": "Design 2 (carousal)"
+        },
+        {
+        "value": "collection-design1",
+        "label": "Design 3"
+        },
+        {
+        "value": "collection-design2",
+        "label": "Design 4"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured collection"
+    },
+    {
+      "id": "collection",
+      "type": "collection",
+      "label": "Collection"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

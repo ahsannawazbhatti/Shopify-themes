@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="pagination-content">
+      {% assign current_first_item = paginate.current_offset | plus:1 %}
+      {% if paginate.pages == paginate.current_page %}
+      {% assign current_displayed = paginate.items | modulo:paginate.page_size %}
+      {% assign current_last_item = paginate.items %}
+      {% else %}
+      {% assign current_displayed = paginate.page_size %}
+      {% assign current_last_item = paginate.current_offset | plus:paginate.page_size %}
+      {% endif %}
+      <p>Showing {{ current_first_item }} to {% unless current_first_item == current_last_item %}{{ current_last_item }}{% endunless %} of {{ paginate.items }} items</p>
+
+      <div class="pagination-button">
+        <ul class="pagination">
+          {% if paginate.previous %}
+          <li class="pagination-previous">
+            <a href="{{ paginate.previous.url }}" title="{{ paginate.previous.title }}">
+              <i class="fa fa-chevron-left"></i>{{ paginate.previous.title }}
+            </a>
+          </li>
+          {% else %}
+          {% endif %}
+
+          {% for part in paginate.parts %}
+          {% if part.is_link %}
+          <li>
+            <a href="{{ part.url }}" title="">{{ part.title }}</a>
+          </li>
+          {% else %}
+          {% if part.title == paginate.current_page %}
+          <li><a href="#"  title=""><span>{{ part.title }}</span></a></li>
+          {% else %}
+          <li>{{ part.title }}</li>
+          {% endif %}
+          {% endif %}
+          {% endfor %}
+
+          {% if paginate.next %}
+          <li class="pagination-next">
+            <a href="{{ paginate.next.url }}" title="{{ paginate.next.title }}">
+              {{ paginate.next.title }}<i class="fa fa-chevron-right"></i>
+            </a>
+          </li>
+          {% else %}
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

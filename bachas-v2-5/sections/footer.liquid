@@ -1,0 +1,209 @@
+<!--Footer Widget Area Start-->
+<div class="footer-widget-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <div class="single-footer-widget">
+          <h4>{{ section.settings.footer_about_us_title }}</h4>
+          <div class="footer-info">
+            <p>{{ section.settings.footer_about_us_description }}</p>
+            <div class="social-button">
+              {% include 'social-button' %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-2 hidden-sm col-xs-12">
+        <div class="single-footer-widget">
+          <h4>{{ linklists[section.settings.footer_menu_1].title }}</h4>
+          <div class="footer-info">
+            <ul class="list">
+              {% for link in linklists[section.settings.footer_menu_1].links %}
+              <li><a href="{{link.url}}">{{link.title}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 hidden-md hidden-sm col-xs-12">
+        <div class="single-footer-widget">
+          <h4>{{ linklists[section.settings.footer_menu_2].title }}</h4>
+          <div class="footer-info">
+            <ul class="list">
+              {% for link in linklists[section.settings.footer_menu_2].links %}
+              <li><a href="{{link.url}}">{{link.title}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+        <div class="single-footer-widget">
+          <h4>{{ linklists[section.settings.footer_menu_3].title }}</h4>
+          <div class="footer-info">
+            <ul class="list">
+              {% for link in linklists[section.settings.footer_menu_3].links %}
+              <li><a href="{{link.url}}">{{link.title}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12">
+        <div class="single-footer-widget">
+          {% if section.settings.footer_content_enable %}
+          <h4>{{ 'layout.footer.contact' | t }}</h4>
+          <div class="footer-info contact">
+            <ul class="list">
+              <li>
+                <i class="fa fa-map-marker"></i>
+                <p>{{ section.settings.footer_address_1 }}, {{ section.settings.footer_address_2 }}, {{ section.settings.footer_country }}</p>
+              </li>
+              <li>
+                <i class="fa fa-phone"></i>
+                {{ 'layout.footer.phone' | t }}: <a href="tel:+{{ section.settings.footer_phone }}">{{ section.settings.footer_phone }}</a>
+              </li>
+              <li>
+                <i class="fa fa-envelope-o"></i>
+                <a href="mailto:{{ section.settings.footer_email }}">{{ section.settings.footer_email }}</a>
+              </li>
+              <li>
+                <i class="fa fa-globe"></i>
+                {{ shop.secure_url }}
+              </li>
+            </ul>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End of Footer Widget Area-->
+<!--Footer Start-->
+<footer id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <p>{{ section.settings.footer_content_text }}</p>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        {% unless shop.enabled_payment_types == empty %}
+        <ul class="list-unstyled list-inline ct-socials text-center-sm ct-payment"  style="float:right;">
+          {% assign enabled_payment_types = 'visa,mastercard,amex,paypal' | remove: ' ' | split: ',' %}
+          {% for type in enabled_payment_types %}
+          <li>
+            <a class="icon fa fa-cc-{{ type }} fa-2x" aria-hidden="true"></a>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endunless %}
+      </div>
+    </div>
+  </div>
+</footer>
+<!--End of Footer-->
+
+{% schema %}
+ {
+    "name": "Footer",
+    "settings": [
+      {
+        "type": "header",
+        "content": "About Us information"
+      },
+      {
+        "type": "text",
+        "id": "footer_about_us_title",
+        "label": "About Us Title"
+      },
+      {
+        "type": "text",
+        "id": "footer_about_us_description",
+        "label": "About Us Description"
+      },
+      {
+        "type": "header",
+        "content": "Contact information"
+      },
+      {
+        "type": "checkbox",
+        "id": "footer_content_enable",
+        "label": "Show footer contact info"
+      },
+      {
+        "type": "text",
+        "id": "footer_address_1",
+        "label": "Contact Address Line 1"
+      },
+      {
+        "type": "text",
+        "id": "footer_address_2",
+        "label": "Contact Address Line 2"
+      },
+      {
+        "type": "text",
+        "id": "footer_country",
+        "label": "Country Text"
+      },
+      {
+        "type": "text",
+        "id": "footer_phone",
+        "label": "Contact Phone"
+      },
+      {
+        "type": "text",
+        "id": "footer_email",
+        "label": "Contact Email"
+      },
+      {
+        "type": "checkbox",
+        "id": "footer_social_enable",
+        "label": "Show social media icons",
+        "info": "Add accounts in Social media section"
+      },
+      {
+        "type": "header",
+        "content": "Newsletter"
+      },
+      {
+        "type": "checkbox",
+        "id": "footer_newsletter_enable",
+        "label": "Show newsletter sign-up"
+      },
+      {
+        "type": "text",
+        "id": "mailing_list_form_action",
+        "label": "MailChimp form action URL",
+        "info": "[Find your MailChimp form action URL](https:\/\/docs.shopify.com\/manual\/configuration\/store-customization\/communicating-with-customers\/accounts-and-newsletters\/get-a-mailchimp-form-action-url\/)."
+      },
+      {
+        "type": "header",
+        "content": "Footer Menu Widgets"
+      },
+      {
+        "type": "link_list",
+        "id": "footer_menu_1",
+        "label": "Menu 1"
+      },
+      {
+        "type": "link_list",
+        "id": "footer_menu_2",
+        "label": "Menu 2"
+      },
+	  {
+        "type": "link_list",
+        "id": "footer_menu_3",
+        "label": "Menu 3"
+      },
+      {
+        "type": "textarea",
+        "id": "footer_content_text",
+        "label": "Contact text",
+        "info": "Use basic HTML to format text"
+      }
+    ]
+  }
+
+{% endschema %}
+

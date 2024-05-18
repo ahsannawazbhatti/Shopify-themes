@@ -1,0 +1,21 @@
+<!--Service Area Start-->
+<div class="service-area {% if section.settings.page_layout == 'home3' %}home-three{% endif %}">
+  <div class="container">
+    <div class="service-section">
+      <div class="row">
+        {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+          <div class="service-item">
+            <i class="{{ block.settings.feature_service_icon }}">icon</i>
+            <h4>{{ block.settings.feature_service_title }}</h4>
+            <p>{{ block.settings.feature_service_description }}</p>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+    </div>    
+  </div>
+</div>
+<!--End of Service Area-->
